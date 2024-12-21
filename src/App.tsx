@@ -5,6 +5,7 @@ import { store } from "./store/store";
 import PrivateRoute from "./components/common/PrivateRoute";
 // import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Details from "./pages/Details";
 // import Profile from "./pages/Profile";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
           <Route path="/login" element={<Login />} />
+          <Route path="/:mediaType/:id" element={<Details />} />
           <Route
             path="/profile"
             element={
