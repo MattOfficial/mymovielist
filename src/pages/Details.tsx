@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import tmdbApi, { MediaItem } from "../services/tmdbApi";
 import Rating from "../components/common/Rating";
 import { addToList, removeFromList, ListType } from "../store/slices/listSlice";
+import "../styles/_details.scss";
 
 const Details: React.FC = () => {
   const { id, mediaType } = useParams<{

@@ -27,7 +27,9 @@ const MediaCard: React.FC<MediaCardProps> = ({ item }) => {
           <h3>{title}</h3>
           <p>{new Date(releaseDate).getFullYear()}</p>
           <div className="rating">
-            <span>★ {item.vote_average.toFixed(1) || "NA"}</span>
+            {item.vote_average && (
+              <span>★ {item.vote_average.toFixed(1) || "NA"}</span>
+            )}
           </div>
         </div>
       </Link>

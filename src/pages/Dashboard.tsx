@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { fetchTrending, fetchPopular } from "../store/slices/movieSlice";
 import MediaCard from "../components/common/MediaCard";
 import SearchBar from "../components/features/SearchBar";
+import "../styles/_dashboard.scss";
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();

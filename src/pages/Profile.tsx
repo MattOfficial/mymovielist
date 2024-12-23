@@ -8,6 +8,7 @@ import {
 } from "../store/slices/listSlice";
 import Statistics from "../components/features/Statistics";
 import MediaList from "../components/features/MediaList";
+import "../styles/_profile.scss";
 
 const Profile: React.FC = () => {
   const dispatch = useAppDispatch();
