@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\" -n \"frontend,backend\" -c \"blue,green\" -k --restart-tries 3",
+    "dev": "concurrently \"bun run dev:frontend\" \"bun run dev:backend\" -n \"frontend,backend\" -c \"blue,green\" -k --restart-tries 3",
     "kill": "kill-port 5173 3001",
     "dev:frontend": "vite",
     "dev:backend": "cd server && bun run dev",
@@ -20,6 +20,7 @@
     "@types/node": "^22.10.2",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
