@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import tmdbApi, { MediaItem } from "../services/tmdbApi";
@@ -6,7 +6,7 @@ import Rating from "../components/common/Rating";
 import { addToList, removeFromList, ListType } from "../store/slices/listSlice";
 import "../styles/_details.scss";
 
-const Details: React.FC = () => {
+const Details = () => {
   const { id, mediaType } = useParams<{
     id: string;
     mediaType: "movie" | "tv";

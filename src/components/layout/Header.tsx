@@ -1,14 +1,29 @@
-// client/src/components/layout/Header.tsx
-import React from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { logout } from "../../store/slices/authSlice";
-import SearchBar from "../features/SearchBar";
+import "../../styles/_header.scss";
 
-const Header: React.FC = () => {
+const Header = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const header = document.querySelector(".main-header");
+      if (header) {
+        if (window.scrollY > 0) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -19,17 +34,13 @@ const Header: React.FC = () => {
     <header className="main-header">
       <div className="header-left">
         <Link to="/" className="logo">
-          Netflix Clone
+          My Movie List
         </Link>
         <nav>
           <Link to="/">Home</Link>
           <Link to="/movies">Movies</Link>
           <Link to="/tv">TV Shows</Link>
         </nav>
-      </div>
-
-      <div className="header-center">
-        <SearchBar />
       </div>
 
       <div className="header-right">

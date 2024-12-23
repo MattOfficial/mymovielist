@@ -4,110 +4,109 @@
   margin: 0 auto;
 
   .profile-header {
-    text-align: center;
+    display: flex;
+    align-items: center;
     margin-bottom: 40px;
+    background: linear-gradient(to right, #141414, #000);
+    padding: 30px;
+    border-radius: 8px;
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-  }
-
-  .statistics {
-    margin-bottom: 40px;
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .stats-card {
-      background: rgba(0, 0, 0, 0.8);
-      border-radius: 8px;
-      padding: 20px;
-      color: white;
-
-      h3 {
-        margin-bottom: 15px;
-        color: #e50914;
+    .profile-info {
+      h1 {
+        color: #fff;
+        margin: 0;
+        font-size: 2.5rem;
       }
 
-      &.watched {
-        border-left: 4px solid #4caf50;
-      }
-      &.planned {
-        border-left: 4px solid #2196f3;
-      }
-      &.dropped {
-        border-left: 4px solid #f44336;
-      }
-
-      .stats-content {
-        p {
-          margin: 8px 0;
-        }
+      p {
+        color: #a3a3a3;
+        margin: 10px 0 0;
       }
     }
   }
 
-  .lists-section {
-    .tabs {
+  .lists-container {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 40px;
+
+    .lists-tabs {
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
 
-      button {
-        padding: 10px 20px;
+      .tab {
+        background: none;
         border: none;
-        border-radius: 4px;
+        color: #fff;
+        padding: 10px 20px;
         cursor: pointer;
-        background: #333;
-        color: white;
+        font-size: 1.1rem;
+        transition: color 0.2s;
+
+        &:hover {
+          color: #e50914;
+        }
 
         &.active {
-          background: #e50914;
+          color: #e50914;
+          border-bottom: 2px solid #e50914;
         }
       }
+    }
+
+    .lists-content {
+      min-height: 400px;
     }
   }
 
-  .media-list {
-    h2 {
-      margin-bottom: 20px;
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+  }
+
+  .empty-list {
+    text-align: center;
+    padding: 40px;
+    color: #a3a3a3;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .profile-page {
+    .profile-header {
+      padding: 20px;
+
+      .profile-info {
+        h1 {
+          font-size: 2rem;
+        }
+      }
     }
 
-    .empty-list {
-      text-align: center;
-      padding: 40px;
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-    }
+    .lists-container {
+      .lists-tabs {
+        overflow-x: auto;
+        padding-bottom: 5px;
 
-    .media-item-wrapper {
-      position: relative;
+        &::-webkit-scrollbar {
+          height: 4px;
+        }
 
-      .remove-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 4px;
-        cursor: pointer;
-        opacity: 0;
-        transition: opacity 0.2s;
-
-        &:hover {
+        &::-webkit-scrollbar-thumb {
           background: #e50914;
         }
       }
+    }
 
-      &:hover .remove-btn {
-        opacity: 1;
-      }
+    .media-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
   }
 }

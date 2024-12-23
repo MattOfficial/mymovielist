@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import debounce from "lodash/debounce";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { searchMedia, setSearchQuery } from "../../store/slices/movieSlice";
-import debounce from "lodash/debounce";
 
-const SearchBar: React.FC = () => {
+const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useAppDispatch();
 

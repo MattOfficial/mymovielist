@@ -1,18 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import api from "../../config/axios";
 import { MediaItem } from "../../services/tmdbApi";
 
 export type ListType = "watched" | "plan_to_watch" | "dropped";
-
-export interface UserList {
-  id: number;
-  userId: number;
-  mediaId: number;
-  mediaType: "movie" | "tv";
-  listType: ListType;
-  rating?: number;
-  addedAt: string;
-}
 
 interface ListState {
   watched: MediaItem[];
@@ -30,6 +20,14 @@ const initialState: ListState = {
   error: null,
 };
 
+export const fetchUserLists = createAsyncThunk(
+  "lists/fetchUserLists",
+  async () => {
+    const response = await api.get("/lists");
+    return response.data;
+  }
+);
+
 export const addToList = createAsyncThunk(
   "lists/addToList",
   async ({
@@ -41,7 +39,7 @@ export const addToList = createAsyncThunk(
     listType: ListType;
     rating?: number;
   }) => {
-    const response = await axios.post("/api/lists", {
+    const response = await api.post("/lists/add", {
       mediaId: mediaItem.id,
       mediaType: mediaItem.media_type,
       listType,
@@ -54,16 +52,8 @@ export const addToList = createAsyncThunk(
 export const removeFromList = createAsyncThunk(
   "lists/removeFromList",
   async ({ mediaId, listType }: { mediaId: number; listType: ListType }) => {
-    await axios.delete(`/api/lists/${mediaId}`);
+    await api.delete(`/lists/${mediaId}`);
     return { mediaId, listType };
-  }
-);
-
-export const fetchUserLists = createAsyncThunk(
-  "lists/fetchUserLists",
-  async () => {
-    const response = await axios.get("/api/lists");
-    return response.data;
   }
 );
 
@@ -78,9 +68,20 @@ const listSlice = createSlice({
       })
       .addCase(fetchUserLists.fulfilled, (state, action) => {
         state.loading = false;
-        state.watched = action.payload.watched;
-        state.planToWatch = action.payload.planToWatch;
-        state.dropped = action.payload.dropped;
+        /* eslint-disable  @typescript-eslint/no-explicit-any */
+        action.payload.forEach((item: any) => {
+          switch (item.listType) {
+            case "watched":
+              state.watched.push(item);
+              break;
+            case "plan_to_watch":
+              state.planToWatch.push(item);
+              break;
+            case "dropped":
+              state.dropped.push(item);
+              break;
+          }
+        });
       })
       .addCase(fetchUserLists.rejected, (state, action) => {
         state.loading = false;

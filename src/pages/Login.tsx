@@ -111,7 +111,7 @@ const Login = () => {
           <div className="auth-switch">
             {isLogin ? (
               <>
-                <p>New to Netflix?</p>
+                <p>New to MyMovieList?</p>
                 <button
                   type="button"
                   onClick={() => setIsLogin(false)}

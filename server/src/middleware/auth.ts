@@ -7,11 +7,16 @@ export interface AuthRequest extends Request {
   user?: { id: number; email: string };
 }
 
-export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const auth = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+): void => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
-    return res.status(401).json({ message: "No token, authorization denied" });
+    res.status(401).json({ message: "No token, authorization denied" });
+    return;
   }
 
   try {

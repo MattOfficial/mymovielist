@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import { fetchTrending, fetchPopular } from "../store/slices/movieSlice";
 import MediaCard from "../components/common/MediaCard";
 import SearchBar from "../components/features/SearchBar";
 import "../styles/_dashboard.scss";
 
-const Dashboard: React.FC = () => {
+const Dashboard = () => {
   const dispatch = useAppDispatch();
   const { trending, popular, searchResults, loading, error, searchQuery } =
     useAppSelector((state) => state.movies);

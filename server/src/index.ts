@@ -1,5 +1,6 @@
 import express from "express";
 import authRoutes from "./routes/auth";
+import listRoutes from "./routes/lists";
 import cors from "cors";
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/lists", listRoutes);
 app.get("/", (req, res) => {
   res.send("Server is running!");
 });

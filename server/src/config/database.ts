@@ -14,6 +14,35 @@ const db: Database = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
+db.serialize(() => {
+  // User Lists table
+  db.run(`
+    CREATE TABLE IF NOT EXISTS user_lists (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      userId INTEGER NOT NULL,
+      mediaId INTEGER NOT NULL,
+      mediaType TEXT NOT NULL,
+      listType TEXT NOT NULL,
+      rating INTEGER,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (userId) REFERENCES users(id),
+      UNIQUE(userId, mediaId)
+    )
+  `);
+
+  // User Stats table for caching
+  db.run(`
+    CREATE TABLE IF NOT EXISTS user_stats (
+      userId INTEGER PRIMARY KEY,
+      totalWatched INTEGER DEFAULT 0,
+      totalPlanToWatch INTEGER DEFAULT 0,
+      totalDropped INTEGER DEFAULT 0,
+      averageRating REAL DEFAULT 0,
+      FOREIGN KEY (userId) REFERENCES users(id)
+    )
+  `);
+});
+
 // Create users table
 db.run(
   `
