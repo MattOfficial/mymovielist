@@ -6,27 +6,27 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Details from "./pages/Details";
 import Profile from "./pages/Profile";
-import Header from "./components/layout/Header";
+import Layout from "./components/layout/Layout";
 
 function App() {
   return (
     <Provider store={store}>
       <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/:mediaType/:id" element={<Details />} />
-          <Route
-            path="/profile"
-            element={
-              <PrivateRoute>
-                <Profile />
-              </PrivateRoute>
-            }
-          />
-        </Routes>
-        {/* </Layout> */}
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/:mediaType/:id" element={<Details />} />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
+        </Layout>
       </Router>
     </Provider>
   );
