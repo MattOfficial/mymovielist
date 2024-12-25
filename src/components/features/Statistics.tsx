@@ -1,5 +1,5 @@
 import React from "react";
-import { ListStats } from "../../types/User";
+import { ListStats } from "../../types/user";
 
 interface StatisticsProps {
   watchedStats: ListStats;
@@ -22,7 +22,12 @@ const Statistics: React.FC<StatisticsProps> = ({
             <p>Total: {watchedStats.totalItems}</p>
             <p>Movies: {watchedStats.moviesCount}</p>
             <p>TV Shows: {watchedStats.tvShowsCount}</p>
-            <p>Average Rating: ★ {watchedStats.averageRating.toFixed(1)}</p>
+            <p>
+              Average Rating: ★{" "}
+              {typeof watchedStats.averageRating === "number"
+                ? watchedStats.averageRating.toFixed(1)
+                : watchedStats.averageRating}
+            </p>
           </div>
         </div>
 

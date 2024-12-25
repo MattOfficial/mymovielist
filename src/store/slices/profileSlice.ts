@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { UserProfile } from "../../types/User";
+import { UserProfile } from "../../types/user";
 
 interface ProfileState {
   profile: UserProfile | null;

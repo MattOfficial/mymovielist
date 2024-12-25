@@ -16,6 +16,8 @@ const Profile = () => {
   const { profile, loading: profileLoading } = useAppSelector(
     (state) => state.profile
   );
+
+  console.log("profile -> ", profile);
   const [activeTab, setActiveTab] = useState<
     "watched" | "plan_to_watch" | "dropped"
   >("watched");
@@ -57,7 +59,7 @@ const Profile = () => {
                 .length,
               tvShowsCount: watched.filter((item) => item.media_type === "tv")
                 .length,
-              averageRating: profile.watchStats.averageRating,
+              averageRating: profile?.watchStats?.averageRating ?? "NA",
             }}
             plannedStats={{
               totalItems: planToWatch.length,

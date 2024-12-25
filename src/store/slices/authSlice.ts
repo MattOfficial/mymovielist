@@ -1,4 +1,3 @@
-// src/redux/slices/authSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../config/axios";
 
@@ -18,6 +17,14 @@ interface RegisterCredentials extends LoginCredentials {
   username: string;
 }
 
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+}
+
 const initialState: AuthState = {
   token: localStorage.getItem("token"),
   isAuthenticated: !!localStorage.getItem("token"),
@@ -31,8 +38,10 @@ export const login = createAsyncThunk(
     try {
       const response = await api.post("/auth/login", credentials);
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Login failed");
+    } catch (error: unknown) {
+      return rejectWithValue(
+        (error as ApiError).response?.data?.message || "Login failed"
+      );
     }
   }
 );
@@ -43,9 +52,9 @@ export const register = createAsyncThunk(
     try {
       const response = await api.post("/auth/register", credentials);
       return response.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       return rejectWithValue(
-        error.response?.data?.message || "Registration failed"
+        (error as ApiError).response?.data?.message || "Registration failed"
       );
     }
   }
@@ -63,7 +72,6 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Login
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -78,7 +86,6 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Register
       .addCase(register.pending, (state) => {
         state.loading = true;
         state.error = null;

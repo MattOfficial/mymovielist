@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../config/axios";
 import { MediaItem } from "../../services/tmdbApi";
@@ -68,7 +69,6 @@ const listSlice = createSlice({
       })
       .addCase(fetchUserLists.fulfilled, (state, action) => {
         state.loading = false;
-        /* eslint-disable  @typescript-eslint/no-explicit-any */
         action.payload.forEach((item: any) => {
           switch (item.listType) {
             case "watched":
