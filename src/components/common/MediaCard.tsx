@@ -1,24 +1,52 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { MediaItem } from "../../services/tmdbApi";
+import tmdbApi, { MediaItem } from "../../services/tmdbApi";
+import "../../styles/_mediaCard.scss";
 
 interface MediaCardProps {
   item: MediaItem;
+  origin: "dashboard" | "profile";
 }
 
-const MediaCard: React.FC<MediaCardProps> = ({ item }) => {
-  const title = "title" in item ? item.title : item.name;
-  const releaseDate =
-    "release_date" in item ? item.release_date : item.first_air_date;
+const MediaCard: React.FC<MediaCardProps> = ({ item, origin }) => {
+  const [itemDetails, setItemDetails] = useState<MediaItem | null>(null);
 
-  return (
+  const placeholderPoster =
+    "https://incakoala.github.io/top9movie/film-poster-placeholder.png";
+
+  useEffect(() => {
+    if (origin === "dashboard") {
+      setItemDetails(item);
+    } else {
+      const fetchItemDetails = async () => {
+        const data = await tmdbApi.getDetails(item.media_id!, item.media_type);
+        setItemDetails({ ...data, media_type: item.media_type });
+      };
+
+      fetchItemDetails();
+    }
+  }, [origin, item]);
+
+  const title = itemDetails
+    ? "title" in itemDetails
+      ? itemDetails.title
+      : itemDetails.name
+    : "";
+  const releaseDate = itemDetails
+    ? "release_date" in itemDetails
+      ? itemDetails.release_date
+      : itemDetails.first_air_date
+    : new Date().toISOString();
+
+  return itemDetails ? (
     <div className="media-card">
-      <Link to={`/${item.media_type}/${item.id}`}>
+      <Link to={`/${itemDetails.media_type}/${itemDetails.id}`}>
         <div className="media-poster">
           <img
-            src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+            src={`https://image.tmdb.org/t/p/w500${itemDetails.poster_path}`}
             alt={title}
             onError={(e) => {
-              (e.target as HTMLImageElement).src = "/placeholder-poster.png";
+              (e.target as HTMLImageElement).src = placeholderPoster;
             }}
           />
         </div>
@@ -26,12 +54,21 @@ const MediaCard: React.FC<MediaCardProps> = ({ item }) => {
           <h3>{title}</h3>
           <p>{new Date(releaseDate).getFullYear()}</p>
           <div className="rating">
-            {item.vote_average && (
-              <span>★ {item.vote_average.toFixed(1) || "NA"}</span>
+            {itemDetails.vote_average && (
+              <span>★ {itemDetails.vote_average.toFixed(1) || "NA"}</span>
             )}
           </div>
         </div>
       </Link>
+    </div>
+  ) : (
+    <div className="media-card">
+      <div className="media-poster">
+        <img src={placeholderPoster} alt="Placeholder" />
+      </div>
+      <div className="media-info">
+        <h3>Loading...</h3>
+      </div>
     </div>
   );
 };

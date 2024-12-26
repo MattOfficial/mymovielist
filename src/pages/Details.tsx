@@ -46,6 +46,7 @@ const Details = () => {
       await dispatch(
         addToList({
           mediaItem: details,
+          mediaType: mediaType!,
           listType,
           rating,
         })

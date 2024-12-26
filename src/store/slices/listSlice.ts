@@ -48,16 +48,17 @@ export const addToList = createAsyncThunk(
   async ({
     mediaItem,
     listType,
+    mediaType,
     rating = 0,
   }: {
     mediaItem: MediaItem;
     listType: ListType;
     rating?: number;
+    mediaType: string;
   }) => {
-    console.log("mediaItem", mediaItem);
     const response = await api.post("/lists", {
       mediaId: mediaItem.id,
-      mediaType: mediaItem.media_type || "movie",
+      mediaType: mediaType,
       listType,
       rating,
     });

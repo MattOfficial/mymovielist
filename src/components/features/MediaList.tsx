@@ -1,6 +1,6 @@
-import React from "react";
 import { MediaItem } from "../../services/tmdbApi";
 import MediaCard from "../common/MediaCard";
+import "../../styles/_mediaList.scss";
 
 interface MediaListProps {
   title: string;
@@ -18,7 +18,7 @@ const MediaList: React.FC<MediaListProps> = ({ title, items, onRemove }) => {
         <div className="media-grid">
           {items.map((item) => (
             <div key={item.id} className="media-item-wrapper">
-              <MediaCard item={item} />
+              <MediaCard item={item} origin="profile" />
               {onRemove && (
                 <button
                   className="remove-btn"

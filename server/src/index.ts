@@ -34,10 +34,12 @@ app.use("/api/lists", listRoutes);
 // Error handling middleware
 app.use(
   (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     err: any,
     req: express.Request,
     res: express.Response,
-    next: express.NextFunction
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _next: express.NextFunction
   ) => {
     console.error(err.stack);
     res.status(500).json({ error: "Something broke!" });

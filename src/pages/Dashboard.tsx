@@ -28,7 +28,7 @@ const Dashboard = () => {
               <h2>Search Results</h2>
               <div className="media-grid">
                 {searchResults.map((item) => (
-                  <MediaCard key={item.id} item={item} />
+                  <MediaCard key={item.id} item={item} origin="dashboard" />
                 ))}
               </div>
             </section>
@@ -38,7 +38,7 @@ const Dashboard = () => {
                 <h2>Trending Now</h2>
                 <div className="media-grid">
                   {trending.map((item) => (
-                    <MediaCard key={item.id} item={item} />
+                    <MediaCard key={item.id} item={item} origin="dashboard" />
                   ))}
                 </div>
               </section>
@@ -63,7 +63,7 @@ const Dashboard = () => {
                 </div>
                 <div className="media-grid">
                   {popular.map((item) => (
-                    <MediaCard key={item.id} item={item} />
+                    <MediaCard key={item.id} item={item} origin="dashboard" />
                   ))}
                 </div>
               </section>
