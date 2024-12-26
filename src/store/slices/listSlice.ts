@@ -1,22 +1,25 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../config/axios";
 import { MediaItem } from "../../services/tmdbApi";
 
-export type ListType = "watched" | "plan_to_watch" | "dropped";
+export type ListType = "watching" | "plan_to_watch" | "dropped" | "completed";
+
+export type MediaPayloadItem = MediaItem & { listType: ListType };
 
 interface ListState {
-  watched: MediaItem[];
+  completed: MediaItem[];
   planToWatch: MediaItem[];
   dropped: MediaItem[];
+  watching: MediaItem[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: ListState = {
-  watched: [],
+  completed: [],
   planToWatch: [],
   dropped: [],
+  watching: [],
   loading: false,
   error: null,
 };
@@ -34,15 +37,16 @@ export const addToList = createAsyncThunk(
   async ({
     mediaItem,
     listType,
-    rating,
+    rating = 0,
   }: {
     mediaItem: MediaItem;
     listType: ListType;
     rating?: number;
   }) => {
-    const response = await api.post("/lists/add", {
+    console.log("mediaItem", mediaItem);
+    const response = await api.post("/lists", {
       mediaId: mediaItem.id,
-      mediaType: mediaItem.media_type,
+      mediaType: mediaItem.media_type || "movie",
       listType,
       rating,
     });
@@ -69,10 +73,13 @@ const listSlice = createSlice({
       })
       .addCase(fetchUserLists.fulfilled, (state, action) => {
         state.loading = false;
-        action.payload.forEach((item: any) => {
+        action.payload.forEach((item: MediaPayloadItem) => {
           switch (item.listType) {
-            case "watched":
-              state.watched.push(item);
+            case "completed":
+              state.completed.push(item);
+              break;
+            case "watching":
+              state.watching.push(item);
               break;
             case "plan_to_watch":
               state.planToWatch.push(item);
@@ -90,8 +97,11 @@ const listSlice = createSlice({
       .addCase(addToList.fulfilled, (state, action) => {
         const { mediaItem, listType } = action.payload;
         switch (listType) {
-          case "watched":
-            state.watched.push(mediaItem);
+          case "completed":
+            state.completed.push(mediaItem);
+            break;
+          case "watching":
+            state.watching.push(mediaItem);
             break;
           case "plan_to_watch":
             state.planToWatch.push(mediaItem);
@@ -104,11 +114,18 @@ const listSlice = createSlice({
       .addCase(removeFromList.fulfilled, (state, action) => {
         const { mediaId, listType } = action.payload;
         switch (listType) {
-          case "watched":
-            state.watched = state.watched.filter((item) => item.id !== mediaId);
+          case "completed":
+            state.completed = state.completed.filter(
+              (item) => item.id !== mediaId
+            );
             break;
           case "plan_to_watch":
             state.planToWatch = state.planToWatch.filter(
+              (item) => item.id !== mediaId
+            );
+            break;
+          case "watching":
+            state.watching = state.watching.filter(
               (item) => item.id !== mediaId
             );
             break;

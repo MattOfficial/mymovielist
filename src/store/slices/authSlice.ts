@@ -47,10 +47,10 @@ export const login = createAsyncThunk(
 );
 
 export const register = createAsyncThunk(
-  "auth/register",
+  "auth/signup",
   async (credentials: RegisterCredentials, { rejectWithValue }) => {
     try {
-      const response = await api.post("/auth/register", credentials);
+      const response = await api.post("/auth/signup", credentials);
       return response.data;
     } catch (error: unknown) {
       return rejectWithValue(

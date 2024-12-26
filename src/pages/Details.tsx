@@ -15,7 +15,7 @@ const Details = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
-  const { watched, planToWatch, dropped } = useAppSelector(
+  const { watching, completed, planToWatch, dropped } = useAppSelector(
     (state) => state.lists
   );
   const { isAuthenticated } = useAppSelector((state) => state.auth);
@@ -76,9 +76,10 @@ const Details = () => {
   if (error) return <div>Error: {error}</div>;
   if (!details) return <div>No details found</div>;
 
-  const isInWatched = watched.some((item) => item.id === details.id);
+  const isInWatched = completed.some((item) => item.id === details.id);
   const isInPlanToWatch = planToWatch.some((item) => item.id === details.id);
   const isInDropped = dropped.some((item) => item.id === details.id);
+  const isInWatching = watching.some((item) => item.id === details.id);
 
   return (
     <div className="details-page">
@@ -123,16 +124,22 @@ const Details = () => {
             <div className="list-actions">
               {!isInWatched ? (
                 <div>
-                  <button onClick={() => handleAddToList("watched")}>
+                  <button onClick={() => handleAddToList("completed")}>
                     Add to Watched
                   </button>
                   <Rating
-                    onRate={(rating) => handleAddToList("watched", rating)}
+                    onRate={(rating) => handleAddToList("completed", rating)}
                   />
                 </div>
               ) : (
-                <button onClick={() => handleRemoveFromList("watched")}>
+                <button onClick={() => handleRemoveFromList("completed")}>
                   Remove from Watched
+                </button>
+              )}
+
+              {!isInWatching && (
+                <button onClick={() => handleAddToList("watching")}>
+                  Add to Watching
                 </button>
               )}
 
