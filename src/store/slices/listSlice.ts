@@ -27,8 +27,19 @@ const initialState: ListState = {
 export const fetchUserLists = createAsyncThunk(
   "lists/fetchUserLists",
   async () => {
-    const response = await api.get("/lists");
-    return response.data;
+    const [completed, planToWatch, dropped, watching] = await Promise.all([
+      api.get("/lists/completed"),
+      api.get("/lists/plan_to_watch"),
+      api.get("/lists/dropped"),
+      api.get("/lists/watching"),
+    ]);
+
+    return {
+      completed: completed.data,
+      planToWatch: planToWatch.data,
+      dropped: dropped.data,
+      watching: watching.data,
+    };
   }
 );
 
@@ -73,22 +84,10 @@ const listSlice = createSlice({
       })
       .addCase(fetchUserLists.fulfilled, (state, action) => {
         state.loading = false;
-        action.payload.forEach((item: MediaPayloadItem) => {
-          switch (item.listType) {
-            case "completed":
-              state.completed.push(item);
-              break;
-            case "watching":
-              state.watching.push(item);
-              break;
-            case "plan_to_watch":
-              state.planToWatch.push(item);
-              break;
-            case "dropped":
-              state.dropped.push(item);
-              break;
-          }
-        });
+        state.completed = action.payload.completed;
+        state.planToWatch = action.payload.planToWatch;
+        state.dropped = action.payload.dropped;
+        state.watching = action.payload.watching;
       })
       .addCase(fetchUserLists.rejected, (state, action) => {
         state.loading = false;
