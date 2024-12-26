@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { fetchUserLists, removeFromList } from "../store/slices/listSlice";
+import {
+  fetchUserLists,
+  ListType,
+  removeFromList,
+} from "../store/slices/listSlice";
 import { fetchUserProfile } from "../store/slices/profileSlice";
 import MediaList from "../components/features/MediaList";
 import Statistics from "../components/features/Statistics";
@@ -8,7 +12,8 @@ import Statistics from "../components/features/Statistics";
 const Profile = () => {
   const dispatch = useAppDispatch();
   const {
-    watched,
+    completed,
+    watching,
     planToWatch,
     dropped,
     loading: listsLoading,
@@ -17,10 +22,7 @@ const Profile = () => {
     (state) => state.profile
   );
 
-  console.log("profile -> ", profile);
-  const [activeTab, setActiveTab] = useState<
-    "watched" | "plan_to_watch" | "dropped"
-  >("watched");
+  const [activeTab, setActiveTab] = useState<ListType>("completed");
 
   useEffect(() => {
     dispatch(fetchUserProfile());
@@ -53,15 +55,25 @@ const Profile = () => {
           </div>
 
           <Statistics
-            watchedStats={{
-              totalItems: watched.length,
-              moviesCount: watched.filter((item) => item.media_type === "movie")
+            completedStats={{
+              totalItems: completed.length,
+              moviesCount: completed.filter(
+                (item) => item.media_type === "movie"
+              ).length,
+              tvShowsCount: completed.filter((item) => item.media_type === "tv")
                 .length,
-              tvShowsCount: watched.filter((item) => item.media_type === "tv")
-                .length,
-              averageRating: profile?.watchStats?.averageRating ?? "NA",
+              averageRating: profile?.watchStats?.averageRating ?? 0,
             }}
-            plannedStats={{
+            watchingStats={{
+              totalItems: watching.length,
+              moviesCount: watching.filter(
+                (item) => item.media_type === "movie"
+              ).length,
+              tvShowsCount: watching.filter((item) => item.media_type === "tv")
+                .length,
+              averageRating: profile?.watchStats?.averageRating ?? 0,
+            }}
+            planToWatchStats={{
               totalItems: planToWatch.length,
               moviesCount: planToWatch.filter(
                 (item) => item.media_type === "movie"
@@ -84,10 +96,16 @@ const Profile = () => {
           <div className="lists-container">
             <div className="lists-tabs">
               <button
-                className={`tab ${activeTab === "watched" ? "active" : ""}`}
-                onClick={() => setActiveTab("watched")}
+                className={`tab ${activeTab === "completed" ? "active" : ""}`}
+                onClick={() => setActiveTab("completed")}
               >
-                Watched
+                Completed
+              </button>
+              <button
+                className={`tab ${activeTab === "watching" ? "active" : ""}`}
+                onClick={() => setActiveTab("watching")}
+              >
+                Watching
               </button>
               <button
                 className={`tab ${
@@ -106,10 +124,17 @@ const Profile = () => {
             </div>
 
             <div className="lists-content">
-              {activeTab === "watched" && (
+              {activeTab === "completed" && (
                 <MediaList
-                  title="Watched"
-                  items={watched}
+                  title="Completed"
+                  items={completed}
+                  onRemove={handleRemoveFromList}
+                />
+              )}
+              {activeTab === "watching" && (
+                <MediaList
+                  title="Watching"
+                  items={watching}
                   onRemove={handleRemoveFromList}
                 />
               )}

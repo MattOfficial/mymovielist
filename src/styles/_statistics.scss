@@ -1,0 +1,154 @@
+.statistics {
+  margin-top: 40px;
+  width: 100%;
+
+  h2 {
+    color: #fff;
+    font-size: 1.8rem;
+    margin-bottom: 24px;
+    font-weight: 500;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+
+    .stats-card {
+      background: rgba(30, 30, 30, 0.95);
+      border-radius: 4px;
+      padding: 24px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      h3 {
+        font-size: 1.3rem;
+        margin-bottom: 16px;
+        font-weight: 500;
+      }
+
+      .stats-content {
+        p {
+          color: #a3a3a3;
+          margin: 12px 0;
+          font-size: 1rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          &:first-child {
+            margin-top: 0;
+          }
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      // Specific styling for each card type
+      &.completed {
+        h3 {
+          color: #2ecc71;
+        }
+      }
+
+      &.watching {
+        h3 {
+          color: #3498db;
+        }
+      }
+
+      &.plan-to-watch {
+        h3 {
+          color: #e74c3c;
+        }
+      }
+
+      &.dropped {
+        h3 {
+          color: #95a5a6;
+        }
+      }
+    }
+  }
+}
+
+// Media queries for responsive design
+@media screen and (max-width: 1024px) {
+  .statistics {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .statistics {
+    margin-top: 30px;
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+
+      .stats-card {
+        padding: 20px;
+
+        h3 {
+          font-size: 1.2rem;
+          margin-bottom: 12px;
+        }
+
+        .stats-content {
+          p {
+            font-size: 0.95rem;
+            margin: 8px 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Dark mode enhancements
+@media (prefers-color-scheme: dark) {
+  .statistics {
+    .stats-card {
+      background: rgba(20, 20, 20, 0.95);
+
+      .stats-content {
+        p {
+          color: #d1d1d1;
+        }
+      }
+    }
+  }
+}
+
+// Animation for loading state (if needed)
+@keyframes cardPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.statistics.loading {
+  .stats-card {
+    animation: cardPulse 1.5s ease-in-out infinite;
+  }
+}
