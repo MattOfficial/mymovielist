@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import listRoutes from "./routes/listRoutes";
+import tmdbRoutes from "./routes/tmdbRoutes";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/lists", listRoutes);
+app.use("/api/tmdb", tmdbRoutes);
 
 // Error handling middleware
 app.use(

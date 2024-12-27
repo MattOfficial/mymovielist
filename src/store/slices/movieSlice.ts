@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import tmdbApi, { MediaItem } from "../../services/tmdbApi";
+import tmdbApi from "../../services/tmdbApi";
+import type { MediaItem } from "../../types/shows";
 
 interface MovieState {
   trending: MediaItem[];

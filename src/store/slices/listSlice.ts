@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../config/axios";
-import { MediaItem } from "../../services/tmdbApi";
+import type { MediaItem } from "../../types/shows";
 
 export type ListType = "watching" | "plan_to_watch" | "dropped" | "completed";
 

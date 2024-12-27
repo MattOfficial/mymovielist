@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import tmdbApi, { MediaItem } from "../services/tmdbApi";
+import tmdbApi from "../services/tmdbApi";
+import type { MediaItem } from "../types/shows";
 import Rating from "../components/common/Rating";
 import { addToList, removeFromList, ListType } from "../store/slices/listSlice";
 import "../styles/_details.scss";

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { searchMedia, clearSearchResults } from "../../store/slices/movieSlice";
-import { MediaItem } from "../../services/tmdbApi";
+import type { MediaItem } from "../../types/shows";
 import useDebounce from "../../hooks/useDebounce";
 
 const SearchBar = () => {

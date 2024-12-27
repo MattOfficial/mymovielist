@@ -1,4 +1,4 @@
-import { MediaItem } from "../../services/tmdbApi";
+import type { MediaItem } from "../../types/shows";
 import MediaCard from "../common/MediaCard";
 import "../../styles/_mediaList.scss";
 

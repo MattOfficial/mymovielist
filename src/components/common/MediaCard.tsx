@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import tmdbApi, { MediaItem } from "../../services/tmdbApi";
+import tmdbApi from "../../services/tmdbApi";
+import type { MediaItem } from "../../types/shows";
 import "../../styles/_mediaCard.scss";
 
 interface MediaCardProps {
