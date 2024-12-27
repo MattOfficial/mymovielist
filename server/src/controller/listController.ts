@@ -53,7 +53,7 @@ export const getList = async (req: AuthRequest, res: Response) => {
 export const updateListItem = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const { listType, rating } = req.body;
+    const { listType, rating = 0 } = req.body;
     const userId = req.user?.id;
 
     db.run(

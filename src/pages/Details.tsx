@@ -124,38 +124,96 @@ const Details = () => {
 
           {isAuthenticated && (
             <div className="list-actions">
-              {!isInWatched ? (
-                <div>
-                  <button onClick={() => handleAddToList("completed")}>
-                    Add to Watched
+              {/* If the item is in any list, show which list it's in and allow removal */}
+              {isInWatched && (
+                <>
+                  <button onClick={() => handleRemoveFromList("completed")}>
+                    Remove from Watched
                   </button>
                   <Rating
                     onRate={(rating) => handleAddToList("completed", rating)}
                   />
+                </>
+              )}
+              {isInWatching && (
+                <button onClick={() => handleRemoveFromList("watching")}>
+                  Remove from Watching
+                </button>
+              )}
+              {isInPlanToWatch && (
+                <button onClick={() => handleRemoveFromList("plan_to_watch")}>
+                  Remove from Plan to Watch
+                </button>
+              )}
+              {isInDropped && (
+                <button onClick={() => handleRemoveFromList("dropped")}>
+                  Remove from Dropped
+                </button>
+              )}
+
+              {/* If the item is in any list, show "Move to..." buttons for other lists */}
+              {(isInWatched ||
+                isInWatching ||
+                isInPlanToWatch ||
+                isInDropped) && (
+                <div className="move-to-actions">
+                  {!isInWatched && (
+                    <div>
+                      <button onClick={() => handleAddToList("completed")}>
+                        Move to Watched
+                      </button>
+                      <Rating
+                        onRate={(rating) =>
+                          handleAddToList("completed", rating)
+                        }
+                      />
+                    </div>
+                  )}
+                  {!isInWatching && (
+                    <button onClick={() => handleAddToList("watching")}>
+                      Move to Watching
+                    </button>
+                  )}
+                  {!isInPlanToWatch && (
+                    <button onClick={() => handleAddToList("plan_to_watch")}>
+                      Move to Plan to Watch
+                    </button>
+                  )}
+                  {!isInDropped && (
+                    <button onClick={() => handleAddToList("dropped")}>
+                      Move to Dropped
+                    </button>
+                  )}
                 </div>
-              ) : (
-                <button onClick={() => handleRemoveFromList("completed")}>
-                  Remove from Watched
-                </button>
               )}
 
-              {!isInWatching && (
-                <button onClick={() => handleAddToList("watching")}>
-                  Add to Watching
-                </button>
-              )}
-
-              {!isInPlanToWatch && (
-                <button onClick={() => handleAddToList("plan_to_watch")}>
-                  Add to Plan to Watch
-                </button>
-              )}
-
-              {!isInDropped && (
-                <button onClick={() => handleAddToList("dropped")}>
-                  Add to Dropped
-                </button>
-              )}
+              {/* If the item isn't in any list, show regular "Add to..." buttons */}
+              {!isInWatched &&
+                !isInWatching &&
+                !isInPlanToWatch &&
+                !isInDropped && (
+                  <>
+                    <div>
+                      <button onClick={() => handleAddToList("completed")}>
+                        Add to Watched
+                      </button>
+                      <Rating
+                        onRate={(rating) =>
+                          handleAddToList("completed", rating)
+                        }
+                      />
+                    </div>
+                    <button onClick={() => handleAddToList("watching")}>
+                      Add to Watching
+                    </button>
+                    <button onClick={() => handleAddToList("plan_to_watch")}>
+                      Add to Plan to Watch
+                    </button>
+                    <button onClick={() => handleAddToList("dropped")}>
+                      Add to Dropped
+                    </button>
+                  </>
+                )}
             </div>
           )}
         </div>

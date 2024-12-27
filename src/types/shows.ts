@@ -20,4 +20,7 @@ export interface TVShow {
   media_type: "tv";
 }
 
-export type MediaItem = (Movie | TVShow) & { media_id?: number };
+export type MediaItem = (Movie | TVShow) & {
+  media_id?: number;
+  rating?: number;
+};

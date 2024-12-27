@@ -6,7 +6,7 @@ export type ListType = "watching" | "plan_to_watch" | "dropped" | "completed";
 
 export type MediaPayloadItem = MediaItem & { listType: ListType };
 
-interface ListState {
+export interface ListState {
   completed: MediaItem[];
   planToWatch: MediaItem[];
   dropped: MediaItem[];
@@ -63,6 +63,30 @@ export const addToList = createAsyncThunk(
       rating,
     });
     return { mediaItem, listType, response: response.data };
+  }
+);
+
+export const updateListItem = createAsyncThunk(
+  "lists/updateListItem",
+  async ({
+    mediaId,
+    listType,
+    rating = 0,
+  }: {
+    mediaId: number;
+    listType: ListType;
+    rating?: number;
+  }) => {
+    const response = await api.put(`/lists/${mediaId}`, {
+      listType,
+      rating,
+    });
+    return {
+      mediaId,
+      listType,
+      rating,
+      response: response.data,
+    };
   }
 );
 
@@ -133,6 +157,57 @@ const listSlice = createSlice({
             state.dropped = state.dropped.filter((item) => item.id !== mediaId);
             break;
         }
+      })
+      .addCase(updateListItem.fulfilled, (state, action) => {
+        const { mediaId, listType, rating } = action.payload;
+
+        type ListKeys = Extract<
+          keyof ListState,
+          "completed" | "planToWatch" | "dropped" | "watching"
+        >;
+        const lists: ListKeys[] = [
+          "completed",
+          "planToWatch",
+          "dropped",
+          "watching",
+        ];
+        let updatedItem: MediaItem | undefined;
+
+        lists.forEach((list) => {
+          const foundItem = state[list].find((item) => item.id === mediaId);
+          if (foundItem) {
+            updatedItem = {
+              ...foundItem,
+              rating: rating,
+            } as MediaItem;
+            state[list] = state[list].filter((item) => item.id !== mediaId);
+          }
+        });
+
+        if (updatedItem) {
+          switch (listType) {
+            case "completed":
+              state.completed.push(updatedItem);
+              break;
+            case "watching":
+              state.watching.push(updatedItem);
+              break;
+            case "plan_to_watch":
+              state.planToWatch.push(updatedItem);
+              break;
+            case "dropped":
+              state.dropped.push(updatedItem);
+              break;
+          }
+        }
+      })
+      .addCase(updateListItem.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateListItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to update item";
       });
   },
 });
