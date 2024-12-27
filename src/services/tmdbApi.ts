@@ -12,7 +12,6 @@ export interface Movie {
   release_date: string;
   vote_average: number;
   media_type: "movie";
-  media_id?: number;
 }
 
 export interface TVShow {
@@ -24,10 +23,9 @@ export interface TVShow {
   first_air_date: string;
   vote_average: number;
   media_type: "tv";
-  media_id?: number;
 }
 
-export type MediaItem = Movie | TVShow;
+export type MediaItem = (Movie | TVShow) & { media_id?: number };
 
 const tmdbApi = {
   getTrending: async (
