@@ -1,50 +1,123 @@
-# React + TypeScript + Vite
+# My Movie List
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack application built with ReactJS, TypeScript, ExpressJS, NodeJS, and SQLite3 that allows users to manage their movie watchlist.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js v22 or higher
+- npm or bun package manager
+- TMDB API Key (instructions below)
 
-## Expanding the ESLint configuration
+## Setup TMDB API Key
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. Visit [TMDB website](https://www.themoviedb.org/) and create an account
+2. Go to your account settings
+3. Click on "API" in the left sidebar
+4. Click "Create" under "Request an API Key"
+5. Fill out the form selecting "Developer" option
+6. Once approved, you'll receive your API key and access token
 
-- Configure the top-level `parserOptions` property like this:
+## Project Setup
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+1. Clone the repository
+
+```bash
+git clone https://github.com/MattOfficial/mymovielist.git
+cd mymovielist
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. Install dependencies
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm install
+# or
+bun i
 ```
+
+3. Create environment files
+
+Root directory `.env`:
+
+```env
+VITE_API_URL=http://localhost:3000/api
+```
+
+Server directory `server/.env`:
+
+```env
+PORT=3000
+TMDB_BASE_URL=https://api.themoviedb.org/3
+TMDB_API_KEY=your_api_key_here
+TMDB_ACCESS_TOKEN=your_access_token_here
+```
+
+4. Start the development server
+
+```bash
+npm run dev
+# or
+bun run dev
+```
+
+## Project Structure
+
+```
+my-movie-list/
+├── src/                  # Frontend source files
+├── server/               # Backend source files
+├── public/               # Public assets
+├── .env                  # Frontend environment variables
+├── server/.env           # Backend environment variables
+└── package.json          # Project dependencies and scripts
+```
+
+## Technology Stack
+
+- **Frontend**
+
+  - ReactJS
+  - TypeScript
+  - Vite
+
+- **Backend**
+  - ExpressJS
+  - NodeJS
+  - SQLite3
+
+## Available Scripts
+
+- `npm install:all` or `bun install:all`: Installs all packages in root and server
+- `npm run dev` or `bun run dev`: Starts both frontend and backend in development mode
+- `npm run dev:frontend`: Runs only the frontend
+- `npm run dev:backend`: Runs only the backend
+- `npm run build`: Builds the frontend for production
+- `npm run preview`: Preview the production build locally
+
+## Environment Variables
+
+### Frontend (.env)
+
+- `VITE_API_URL`: Backend API URL
+
+### Backend (server/.env)
+
+- `PORT`: Server port number
+- `TMDB_BASE_URL`: TMDB API base URL
+- `TMDB_API_KEY`: Your TMDB API key
+- `TMDB_ACCESS_TOKEN`: Your TMDB access token
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details
+
+## Acknowledgments
+
+- [TMDB API](https://developers.themoviedb.org/3) for providing movie data
